@@ -26,6 +26,8 @@ public class OfficeFloor implements Collection<Office> {
     }
 
     private Node<Office> getNode(int id){
+        if(id>=size())
+            throw new SpaceIndexOutOfBoundsException();
         Node<Office> buf = firstNode.nextElement;
         for(int i=0;i<id;i++){
             buf=buf.nextElement;
@@ -50,10 +52,10 @@ public class OfficeFloor implements Collection<Office> {
         return size;
     }
 
-    public double totalArea(){
+    public double totalSpace(){
         double count=0;
         for(Office office : this){
-            count+=office.getArea();
+            count+=office.getSpace();
         }
         return count;
     }
@@ -67,6 +69,8 @@ public class OfficeFloor implements Collection<Office> {
     }
 
     public Office get(int id){
+        if(id>=size())
+            throw new SpaceIndexOutOfBoundsException();
         return getNode(id).currentElement;
     }
 
@@ -78,13 +82,15 @@ public class OfficeFloor implements Collection<Office> {
         if(id==size){
             return add(office);
         }
+        if(id>=size())
+            throw new SpaceIndexOutOfBoundsException();
         return false;
     }
 
     public Office getBestSpace(){
         Office bestFlat = firstNode.nextElement.currentElement;
         for(Office office : this){
-            if(bestFlat.getArea()<office.getArea())
+            if(bestFlat.getSpace()<office.getSpace())
                 bestFlat=office;
         }
         return bestFlat;

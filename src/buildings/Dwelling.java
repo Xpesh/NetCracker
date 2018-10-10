@@ -30,11 +30,11 @@ public class Dwelling {
         return count;
     }
 
-    public double totalArea(){
+    public double totalSpace(){
         double count = 0;
         for(DwellingFloor dwellingFloor : dwellingFloors){
             if(dwellingFloor!=null){
-                count+=dwellingFloor.totalArea();
+                count+=dwellingFloor.totalSpace();
             }
         }
         return count;
@@ -55,51 +55,66 @@ public class Dwelling {
     }
 
     public DwellingFloor getDwellingFloor(int index){
+        if(index>size()){
+            throw new FloorIndexOutOfBoundsException();
+        }
         return dwellingFloors[index];
     }
 
     public void setDwellingFloor(int index, DwellingFloor dwellingFloor){
+        if(index>size()){
+            throw new FloorIndexOutOfBoundsException();
+        }
         dwellingFloors[index]=dwellingFloor;
     }
 
     public Flat get(int index){
+        if(index>numberFlats()){
+            throw new SpaceIndexOutOfBoundsException();
+        }
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
             else
-                return dwellingFloors[i].getFlat(index);
+                return dwellingFloors[i].get(index);
         }
         return null;
     }
 
     public void set(int index, Flat flat){
+        if(index>=numberFlats())
+            throw new SpaceIndexOutOfBoundsException();
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
             else {
-                dwellingFloors[i].setFlat(index, flat);
+                dwellingFloors[i].set(index, flat);
                 return;
             }
         }
     }
 
     public void add(int index, Flat flat){
+        if(index>numberFlats())
+            throw new SpaceIndexOutOfBoundsException();
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
             else {
-                dwellingFloors[i].addFlat(index, flat);
+                dwellingFloors[i].add(index, flat);
                 return;
             }
         }
     }
 
     public void remove(int index){
+        if(index>=numberFlats())
+            throw new SpaceIndexOutOfBoundsException();
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
             else {
-                dwellingFloors[i].removeFlat(index);
+                dwellingFloors[i].remove(index);
                 return;
             }
         }
@@ -111,7 +126,7 @@ public class Dwelling {
         Flat flat, bestFlat = dwellingFloors[0].getBestSpace();
         for(int i=1;i<size();i++){
             flat = dwellingFloors[i].getBestSpace();
-            if(bestFlat.getArea()<flat.getArea()){
+            if(bestFlat.getSpace()<flat.getSpace()){
                 bestFlat=flat;
             }
         }
@@ -134,11 +149,11 @@ public class Dwelling {
     private static void quickSort(Flat[] a, int first, int last) {
         int i = first;
         int j = last;
-        double x = a[(first + last) / 2].getArea();
+        double x = a[(first + last) / 2].getSpace();
         Flat temp;
         do {
-            while (a[i].getArea() < x) i++;
-            while (a[j].getArea() > x) j--;
+            while (a[i].getSpace() < x) i++;
+            while (a[j].getSpace() > x) j--;
             if (i <= j) {
                 if (i < j) {
                     temp = a[i];

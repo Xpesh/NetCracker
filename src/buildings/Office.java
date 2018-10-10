@@ -1,30 +1,36 @@
 package buildings;
 
 public class Office {
-    private double area;
+    private double space;
     private int numberRooms;
     private static final int DEFAULT_NUMBER_ROOMS=1;
-    private static final int DEFAULT_AREA=250;
+    private static final int DEFAULT_SPACE =250;
 
-    public Office(double area, int numberRooms) {
-        this.area = area;
+    public Office(double space, int numberRooms) {
+        if(space<=0){
+            throw new InvalidSpaceAreaException();
+        }
+        if(numberRooms<1){
+            throw new InvalidRoomsCountException();
+        }
+        this.space = space;
         this.numberRooms = numberRooms;
     }
 
     public Office() {
-        this(DEFAULT_AREA,DEFAULT_NUMBER_ROOMS);
+        this(DEFAULT_SPACE,DEFAULT_NUMBER_ROOMS);
     }
 
-    public Office(double area) {
-        this(area,DEFAULT_NUMBER_ROOMS);
+    public Office(double space) {
+        this(space,DEFAULT_NUMBER_ROOMS);
     }
 
-    public double getArea() {
-        return area;
+    public double getSpace() {
+        return space;
     }
 
-    public void setArea(double area) {
-        this.area = area;
+    public void setSpace(double space) {
+        this.space = space;
     }
 
     public int getNumberRooms() {
@@ -38,7 +44,7 @@ public class Office {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Office{");
-        sb.append("area=").append(area);
+        sb.append("space=").append(space);
         sb.append(", numberRooms=").append(numberRooms);
         sb.append('}');
         return sb.toString();
@@ -51,7 +57,7 @@ public class Office {
 
         Office office = (Office) o;
 
-        if (Double.compare(office.area, area) != 0) return false;
+        if (Double.compare(office.space, space) != 0) return false;
         return numberRooms == office.numberRooms;
     }
 
@@ -59,7 +65,7 @@ public class Office {
     public int hashCode() {
         int result;
         long temp;
-        temp = Double.doubleToLongBits(area);
+        temp = Double.doubleToLongBits(space);
         result = (int) (temp ^ (temp >>> 32));
         result = 31 * result + numberRooms;
         return result;

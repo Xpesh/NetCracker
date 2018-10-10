@@ -20,10 +20,10 @@ public class DwellingFloor {
         return flats.length;
     }
 
-    public double totalArea(){
+    public double totalSpace(){
         double count=0;
         for(Flat flat : flats){
-            count+=flat.getArea();
+            count+=flat.getSpace();
         }
         return count;
     }
@@ -41,6 +41,8 @@ public class DwellingFloor {
     }
 
     public Flat get(int index){
+        if(index>=size())
+            throw new SpaceIndexOutOfBoundsException();
         return flats[index];
     }
 
@@ -67,7 +69,7 @@ public class DwellingFloor {
     public Flat getBestSpace(){
         Flat bestFlat = flats[0];
         for(Flat flat : flats){
-            if(bestFlat.getArea()<flat.getArea())
+            if(bestFlat.getSpace()<flat.getSpace())
                 bestFlat=flat;
         }
         return bestFlat;

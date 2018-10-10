@@ -1,30 +1,36 @@
 package buildings;
 
 public class Flat {
-    private double area;
+    private double space;
     private int numberRooms;
     private static final int DEFAULT_NUMBER_ROOMS=2;
-    private static final int DEFAULT_AREA=50;
+    private static final int DEFAULT_SPACE =50;
 
-    public Flat(double area, int numberRooms) {
-        this.area = area;
+    public Flat(double space, int numberRooms) {
+        if(space<=0){
+            throw new InvalidSpaceAreaException();
+        }
+        if(numberRooms<1){
+            throw new InvalidRoomsCountException();
+        }
+        this.space = space;
         this.numberRooms = numberRooms;
     }
 
     public Flat() {
-        this(DEFAULT_AREA,DEFAULT_NUMBER_ROOMS);
+        this(DEFAULT_SPACE,DEFAULT_NUMBER_ROOMS);
     }
 
-    public Flat(double area) {
-        this(area,DEFAULT_NUMBER_ROOMS);
+    public Flat(double space) {
+        this(space,DEFAULT_NUMBER_ROOMS);
     }
 
-    public double getArea() {
-        return area;
+    public double getSpace() {
+        return space;
     }
 
-    public void setArea(double area) {
-        this.area = area;
+    public void setSpace(double space) {
+        this.space = space;
     }
 
     public int getNumberRooms() {
@@ -38,7 +44,7 @@ public class Flat {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("\nFlat{");
-        sb.append("area=").append(area);
+        sb.append("space=").append(space);
         sb.append(", numberRooms=").append(numberRooms);
         sb.append('}');
         return sb.toString();

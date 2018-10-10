@@ -32,10 +32,10 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
         }
         return count;
     }
-    public double totalArea() {
+    public double totalSpace() {
         double count=0;
         for(OfficeFloor officeFloor : this){
-            count+=officeFloor.totalArea();
+            count+=officeFloor.totalSpace();
         }
         return count;
     }
@@ -48,6 +48,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     public Office getOffice(int index){
+        if(index>=size()){
+            throw new SpaceIndexOutOfBoundsException();
+        }
         for(OfficeFloor officeFloor : this){
             if(index >= officeFloor.size())
                 index-=officeFloor.size();
@@ -58,6 +61,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     public void setFlat(int index, Office office){
+        if(index>=size()){
+            throw new SpaceIndexOutOfBoundsException();
+        }
         for(OfficeFloor officeFloor : this){
             if(index >= officeFloor.size())
                 index-=officeFloor.size();
@@ -69,6 +75,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     public void addFlat(int index, Office office){
+        if(index>size()){
+            throw new SpaceIndexOutOfBoundsException();
+        }
         for(OfficeFloor officeFloor : this){
             if(index >= officeFloor.size())
                 index-=officeFloor.size();
@@ -80,6 +89,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     public void removeFlat(int index){
+        if(index>=size()){
+            throw new SpaceIndexOutOfBoundsException();
+        }
         for(OfficeFloor officeFloor : this){
             if(index >= officeFloor.size())
                 index-=officeFloor.size();
@@ -93,7 +105,7 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     public Office getBestSpace(){
         Office bestFlat = firstNode.nextElement.currentElement.getBestSpace();
         for(OfficeFloor officeFloor : this){
-            if(bestFlat.getArea()<officeFloor.getBestSpace().getArea())
+            if(bestFlat.getSpace()<officeFloor.getBestSpace().getSpace())
                 bestFlat=officeFloor.getBestSpace();
         }
         return bestFlat;
@@ -115,11 +127,11 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     private static void quickSort(Office[] a, int first, int last) {
         int i = first;
         int j = last;
-        double x = a[(first + last) / 2].getArea();
+        double x = a[(first + last) / 2].getSpace();
         Office temp;
         do {
-            while (a[i].getArea() < x) i++;
-            while (a[j].getArea() > x) j--;
+            while (a[i].getSpace() < x) i++;
+            while (a[j].getSpace() > x) j--;
             if (i <= j) {
                 if (i < j) {
                     temp = a[i];
@@ -139,6 +151,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     //Collection
 
     private Node<OfficeFloor> getNode(int id){
+        if(id>=size()){
+            throw new FloorIndexOutOfBoundsException();
+        }
         Node<OfficeFloor> buf = firstNode.nextElement;
         for(int i=0;i<id;i++){
             buf=buf.nextElement;
