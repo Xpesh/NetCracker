@@ -1,19 +1,16 @@
 package buildings;
 
-import java.util.Random;
-
 public class Test {
     public static void main(String[] args) {
-        Dwelling dwelling = new Dwelling(2, new int[]{5, 5});
-        Random random = new Random();
-        for(int i=0;i<dwelling.numberFlats();i++){
-            dwelling.setFlat(i,new Flat(random.nextDouble(),random.nextInt()));
-        }
-        dwelling.addFlat(4, new Flat(250,5) );
-        dwelling.addFlat(5, new Flat(250,5) );
-        Flat[] flats = dwelling.flatsSorted();
-        for(Flat flat : flats){
-            System.out.println(flat);
-        }
+//        Dwelling dwelling = new Dwelling(2, new int[]{5, 5});
+//        dwelling.setFlat(6, new Flat(251,4) );
+//        dwelling.addFlat(5, new Flat(25,5) );
+//        System.out.println(dwelling);
+
+        OfficeFloor officeFloor = new OfficeFloor(10);
+//        officeFloor.set(3,new Office(55,1));
+//        officeFloor.remove(new Office(55,1));
+        System.out.println(officeFloor);
+
     }
 }

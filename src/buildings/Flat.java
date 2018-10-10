@@ -37,7 +37,7 @@ public class Flat {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Flat{");
+        final StringBuilder sb = new StringBuilder("\nFlat{");
         sb.append("area=").append(area);
         sb.append(", numberRooms=").append(numberRooms);
         sb.append('}');

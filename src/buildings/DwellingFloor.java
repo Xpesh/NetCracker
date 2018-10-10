@@ -1,5 +1,7 @@
 package buildings;
 
+import java.util.Arrays;
+
 public class DwellingFloor {
     private Flat[] flats;
 
@@ -9,6 +11,9 @@ public class DwellingFloor {
 
     public DwellingFloor(int numberFlats) {
         this.flats = new Flat[numberFlats];
+        for(int i =0;i<numberFlats;i++){
+            flats[i]=new Flat();
+        }
     }
 
     public int size(){
@@ -23,10 +28,10 @@ public class DwellingFloor {
         return count;
     }
 
-    public double totalNumberRooms(){
-        double count=0;
+    public int totalNumberRooms(){
+        int count=0;
         for(Flat flat : flats){
-            if (flat != null) count += flat.getNumberRooms();
+            count += flat.getNumberRooms();
         }
         return count;
     }
@@ -35,34 +40,44 @@ public class DwellingFloor {
         return flats;
     }
 
-    public Flat getFlat(int index){
+    public Flat get(int index){
         return flats[index];
     }
 
-    public void setFlat(int index, Flat flat){
+    public void set(int index, Flat flat){
         flats[index]=flat;
     }
 
-    public void addFlat(int index, Flat flat){
+    public void add(int index, Flat flat){
         if(index>size()){
-            Flat[] bufFlats = new Flat[index*2];
+            Flat[] bufFlats = new Flat[size()+1];
             System.arraycopy(flats,0,bufFlats,0,size());
             flats=bufFlats;
         }
         flats[index]=flat;
     }
 
-    public void removeFlat(int index){
-        flats[index]=null;
+    public void remove(int index){
+        Flat[] bufFlats = new Flat[flats.length-1];
+        System.arraycopy(flats,index+1,bufFlats,index,flats.length-index-1);
+        System.arraycopy(flats,0,bufFlats,0,index);
+        flats=bufFlats;
     }
 
     public Flat getBestSpace(){
-        Flat flat, bestFlat = flats[0];
-        for(int i=1;i<size();i++){
-            flat = flats[i];
-            if(flat!=null && bestFlat.getArea()<flat.getArea())
+        Flat bestFlat = flats[0];
+        for(Flat flat : flats){
+            if(bestFlat.getArea()<flat.getArea())
                 bestFlat=flat;
         }
         return bestFlat;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("DwellingFloor{");
+        sb.append("flats=").append(Arrays.toString(flats));
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,5 +1,7 @@
 package buildings;
 
+import java.util.Arrays;
+
 public class Dwelling {
     private DwellingFloor[] dwellingFloors;
 
@@ -21,17 +23,17 @@ public class Dwelling {
     public int numberFlats(){
         int count = 0;
         for(DwellingFloor dwellingFloor : dwellingFloors){
-            if(dwellingFloor!=null){//todo или лучше тернарный оператор
+            if(dwellingFloor!=null){
                 count+=dwellingFloor.size();
             }
         }
         return count;
     }
 
-    public double summArea(){
+    public double totalArea(){
         double count = 0;
         for(DwellingFloor dwellingFloor : dwellingFloors){
-            if(dwellingFloor!=null){//todo или лучше тернарный оператор
+            if(dwellingFloor!=null){
                 count+=dwellingFloor.totalArea();
             }
         }
@@ -41,7 +43,7 @@ public class Dwelling {
     public int totalNumberRooms(){
         int count = 0;
         for(DwellingFloor dwellingFloor : dwellingFloors){
-            if(dwellingFloor!=null){//todo или лучше тернарный оператор
+            if(dwellingFloor!=null){
                 count+=dwellingFloor.totalNumberRooms();
             }
         }
@@ -60,7 +62,7 @@ public class Dwelling {
         dwellingFloors[index]=dwellingFloor;
     }
 
-    public Flat getFlat(int index){
+    public Flat get(int index){
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
@@ -70,32 +72,40 @@ public class Dwelling {
         return null;
     }
 
-    public void setFlat(int index, Flat flat){
+    public void set(int index, Flat flat){
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
-            else
-                dwellingFloors[i].setFlat(index,flat);
+            else {
+                dwellingFloors[i].setFlat(index, flat);
+                return;
+            }
         }
     }
 
-    public void addFlat(int index, Flat flat){
+    public void add(int index, Flat flat){
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
-            else
-                dwellingFloors[i].addFlat(index,flat);
+            else {
+                dwellingFloors[i].addFlat(index, flat);
+                return;
+            }
         }
     }
 
-    public void removeFlat(int index, Flat flat){
+    public void remove(int index){
         for(int i=0;i<size();i++){
             if(index >= dwellingFloors[i].size())
                 index-=dwellingFloors[i].size();
-            else
+            else {
                 dwellingFloors[i].removeFlat(index);
+                return;
+            }
         }
     }
+
+
 
     public Flat getBestSpace(){
         Flat flat, bestFlat = dwellingFloors[0].getBestSpace();
@@ -108,61 +118,49 @@ public class Dwelling {
         return bestFlat;
     }
 
-    public Flat[] flatsSorted(){
-        Flat[] flats = new Flat[numberFlats()];
-        int count=0;
-        for(DwellingFloor dwellingFloor : dwellingFloors){
-            System.arraycopy(dwellingFloor.getFlats(), 0,flats,count,dwellingFloor.size());
-            count+=dwellingFloor.size();
+    public Flat[] getSortedFlat () {
+        Flat[] arr = new Flat[numberFlats()];
+        Flat[] toAdd;
+        int c = 0;
+        for (int i = 0; i < dwellingFloors.length; i++) {
+            toAdd = dwellingFloors[i].getFlats();
+            System.arraycopy(toAdd, 0, arr, c, toAdd.length);
+            c += toAdd.length;
         }
-        return new QuickSort(flats,0,flats.length-1).sort();
+        quickSort(arr,0,arr.length-1);
+        return arr;
     }
 
-
-
-
-}
-class QuickSort{
-    private Flat[] flats;
-    private int startIndex;
-    private int endIndex;
-
-    public QuickSort(Flat[] flats, int startIndex, int endIndex) {
-        this.flats = flats;
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
-    }
-
-    public Flat[] sort(){
-        doSort(startIndex, endIndex);
-        return flats;
-    }
-
-    private void doSort(int start, int end) {
-        if (start >= end)
-            return;
-        int i = start, j = end;
+    private static void quickSort(Flat[] a, int first, int last) {
+        int i = first;
+        int j = last;
+        double x = a[(first + last) / 2].getArea();
         Flat temp;
-        int cur = i - (i - j) / 2;
-        while (i < j) {
-            while (i < cur && (flats[i].getArea() <= flats[cur].getArea())) {
+        do {
+            while (a[i].getArea() < x) i++;
+            while (a[j].getArea() > x) j--;
+            if (i <= j) {
+                if (i < j) {
+                    temp = a[i];
+                    a[i] = a[j];
+                    a[j] = temp;
+                }
                 i++;
-            }
-            while (j > cur && (flats[cur].getArea() <= flats[j].getArea())) {
                 j--;
             }
-            if (i < j) {
-                temp = flats[i];
-                flats[i] = flats[j];
-                flats[j] = temp;
-                if (i == cur)
-                    cur = j;
-                else if (j == cur)
-                    cur = i;
-            }
-        }
-        doSort(start, cur);
-        doSort(cur + 1, end);
+        } while (i <= j);
+        if (i < last)
+            quickSort(a, i, last);
+        if (first < j)
+            quickSort(a, first, j);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Dwelling{");
+        sb.append("dwellingFloors=").append(Arrays.toString(dwellingFloors));
+        sb.append('}');
+        return sb.toString();
+    }
 }
+
