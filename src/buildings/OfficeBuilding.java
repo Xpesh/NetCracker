@@ -3,120 +3,120 @@ package buildings;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OfficeBuilding implements Collection<OfficeFloor>{
+public class OfficeBuilding implements Collection<Floor>, Building{
 
     private int size=0;
-    private Node<OfficeFloor> lastNode = new Node<OfficeFloor>();
-    private Node<OfficeFloor> firstNode = new Node<OfficeFloor>(null,lastNode,lastNode);
+    private Node<Floor> headNode = new Node<Floor>();
     {
-        lastNode.nextElement=firstNode;
-        lastNode.prevElement=firstNode;
+        headNode.nextElement=headNode;
+        headNode.prevElement=headNode;
     }
 
-    public OfficeBuilding(OfficeFloor[] officeFloors) {
-        for(OfficeFloor officeFloor : officeFloors){
-            add(officeFloor);
+    public OfficeBuilding(Floor[] floors) {
+        for(Floor floor : floors){
+            add(floor);
         }
     }
 
-    public OfficeBuilding(int numberDwellingFloor, int[] sizeDwellingFloor) {
-        for(int i : sizeDwellingFloor){
+    public OfficeBuilding(int numberFloor, int[] sizeFloor) {
+        for(int i : sizeFloor){
             add(new OfficeFloor(i));
         }
     }
 
-    public int numbersOffice() {
+    public int numberSpaces() {
         int count=0;
-        for(OfficeFloor officeFloor : this){
-            count+=officeFloor.size();
+        for(Floor floor : this){
+            count+=floor.size();
         }
         return count;
     }
     public double totalSpace() {
         double count=0;
-        for(OfficeFloor officeFloor : this){
-            count+=officeFloor.totalSpace();
+        for(Floor floor : this){
+            count+=floor.totalSpace();
         }
         return count;
     }
     public int totalNumberRooms() {
         int count=0;
-        for(OfficeFloor officeFloor : this){
-            count+=officeFloor.totalNumberRooms();
+        for(Floor floor : this){
+            count+=floor.totalNumberRooms();
         }
         return count;
     }
 
-    public Office getOffice(int index){
-        if(index>=size()){
-            throw new SpaceIndexOutOfBoundsException();
-        }
-        for(OfficeFloor officeFloor : this){
-            if(index >= officeFloor.size())
-                index-=officeFloor.size();
+    @Override
+    public Floor[] getFloors() {
+        return (Floor[]) toArray();
+    }
+
+    @Override
+    public Floor getFloor(int index) {
+        return getNode(index).currentElement;
+    }
+
+    @Override
+    public Floor setFloor(int index, Floor floor) {
+        Node<Floor> node = getNode(index);
+        Floor returnFloor = node.currentElement;
+        node.currentElement=floor;
+        return returnFloor;
+    }
+
+    public Space get(int index){
+        for(Floor floor : this){
+            if(index >= floor.size())
+                index-=floor.size();
             else
-                return officeFloor.get(index);
+                return floor.get(index);
         }
         return null;
     }
 
-    public void setFlat(int index, Office office){
-        if(index>=size()){
+    public Space set(int index, Space space){
+        if(index<0 || index>=size()){
             throw new SpaceIndexOutOfBoundsException();
         }
-        for(OfficeFloor officeFloor : this){
-            if(index >= officeFloor.size())
-                index-=officeFloor.size();
+        for(Floor floor : this){
+            if(index >= floor.size())
+                index-=floor.size();
             else {
-                officeFloor.set(index, office);
-                return;
+               return floor.set(index, space);
             }
         }
+        throw new SpaceIndexOutOfBoundsException();
     }
 
-    public void addFlat(int index, Office office){
+    public boolean add(int index, Space space){
         if(index>size()){
             throw new SpaceIndexOutOfBoundsException();
         }
-        for(OfficeFloor officeFloor : this){
-            if(index >= officeFloor.size())
-                index-=officeFloor.size();
+        for(Floor floor : this){
+            if(index >= floor.size())
+                index-=floor.size();
             else {
-                officeFloor.add(index, office);
-                return;
+                return floor.add(index, space);
             }
         }
+        return false;
     }
 
-    public void removeFlat(int index){
-        if(index>=size()){
-            throw new SpaceIndexOutOfBoundsException();
-        }
-        for(OfficeFloor officeFloor : this){
-            if(index >= officeFloor.size())
-                index-=officeFloor.size();
-            else {
-                officeFloor.remove(index);
-                return;
-            }
-        }
-    }
-
-    public Office getBestSpace(){
-        Office bestFlat = firstNode.nextElement.currentElement.getBestSpace();
-        for(OfficeFloor officeFloor : this){
-            if(bestFlat.getSpace()<officeFloor.getBestSpace().getSpace())
-                bestFlat=officeFloor.getBestSpace();
+    public Space getBestSpace(){
+        Space bestFlat = headNode.nextElement.currentElement.getBestSpace();
+        for(Floor floor : this){
+            if(bestFlat.getSpace()<floor.getBestSpace().getSpace())
+                bestFlat=floor.getBestSpace();
         }
         return bestFlat;
     }
 
-    public Office[] getSortedFlat () {
-        Office[] arr = new Office[numbersOffice()];
-        Office[] toAdd;
+    public Space[] getSortedSpace() {
+        Space[] arr = new Space[numberSpaces()];
+        Space[] toAdd;
         int c = 0;
-        for (OfficeFloor officeFloor : this) {
-            toAdd = (Office[]) officeFloor.toArray();
+        for (Floor floor : this) {
+            toAdd = (Space[]) floor.getSpaces();
             System.arraycopy(toAdd, 0, arr, c, toAdd.length);
             c += toAdd.length;
         }
@@ -124,11 +124,11 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
         return arr;
     }
 
-    private static void quickSort(Office[] a, int first, int last) {
+    private static void quickSort(Space[] a, int first, int last) {
         int i = first;
         int j = last;
         double x = a[(first + last) / 2].getSpace();
-        Office temp;
+        Space temp;
         do {
             while (a[i].getSpace() < x) i++;
             while (a[j].getSpace() > x) j--;
@@ -150,26 +150,30 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
 
     //Collection
 
-    private Node<OfficeFloor> getNode(int id){
-        if(id>=size()){
+    private Node<Floor> getNode(int id){
+        if(id<-1 || id>=size()){
             throw new FloorIndexOutOfBoundsException();
         }
-        Node<OfficeFloor> buf = firstNode.nextElement;
+        if(id==-1){
+            return headNode;
+        }
+        Node<Floor> buf = headNode.nextElement;
         for(int i=0;i<id;i++){
             buf=buf.nextElement;
         }
         return buf;
     }
     private void removeNode(int id){
-        Node<OfficeFloor> buf = getNode(id-1);
+        Node<Floor> buf = getNode(id-1);
         buf.nextElement=buf.nextElement.nextElement;
+        size--;
     }
     public void remove(int id){
         removeNode(id);
     }
 
-    private void addNode(int id, Node<OfficeFloor> node){
-        Node<OfficeFloor> buf = getNode(id-1);
+    private void addNode(int id, Node<Floor> node){
+        Node<Floor> buf = getNode(id-1);
         node.nextElement=buf.nextElement;
         buf.nextElement=node;
     }
@@ -184,7 +188,7 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
 
     @Override
     public boolean contains(Object o) {
-        for (OfficeFloor o1 : this) {
+        for (Floor o1 : this) {
             if (o1.equals(o)) {
                 return true;
             }
@@ -193,9 +197,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     @Override
-    public Iterator<OfficeFloor> iterator() {
-        return new Iterator<OfficeFloor>() {
-            Node<OfficeFloor> currentNode = firstNode;
+    public Iterator<Floor> iterator() {
+        return new Iterator<Floor>() {
+            Node<Floor> currentNode = headNode;
             int currentId = 0;
             @Override
             public boolean hasNext() {
@@ -203,7 +207,7 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
             }
 
             @Override
-            public OfficeFloor next() {
+            public Floor next() {
                 if(hasNext()){
                     currentNode=currentNode.nextElement;
                     currentId++;
@@ -216,7 +220,7 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
 
     @Override
     public Object[] toArray() {
-        Object[] objects = new Office[size];
+        Object[] objects = new Space[size];
         int count = 0;
         for (Object o : this) {
             objects[count++] = o;
@@ -234,23 +238,31 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     @Override
-    public boolean add(OfficeFloor officeFloor) {
-        Node<OfficeFloor> prev = lastNode;
-        prev.currentElement = officeFloor;
-        lastNode = new Node<OfficeFloor>(null,firstNode,prev);
-        prev.nextElement = lastNode;
+    public boolean add(Floor officeFloor) {
+        Node<Floor> node;
+        if(size==0){
+            node = new Node<Floor>(officeFloor,null,null);
+            node.nextElement=node;
+            node.prevElement=node;
+            headNode.nextElement=node;
+        } else {
+            node = new Node<Floor>(officeFloor, headNode.nextElement, headNode.nextElement.prevElement);
+        }
+        headNode.nextElement.prevElement.nextElement=node;
+        headNode.nextElement.prevElement=node;
         size++;
         return true;
+
     }
 
     @Override
     public boolean remove(Object o) {
         if(getNode(0).currentElement.equals(o)){
-            firstNode.nextElement=getNode(1);
+            headNode.nextElement=getNode(1);
             size--;
             return true;
         }
-        Node<OfficeFloor> buf = getNode(1);
+        Node<Floor> buf = getNode(1);
         while (buf.currentElement!=null){
             if(buf.currentElement.equals(o)){
                 buf.prevElement.nextElement=buf.nextElement;
@@ -268,7 +280,7 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
         if (c == null) { throw new NullPointerException("specified collection in null"); }
         if (c == this) { return true; }
         for (Object aC : c) {
-            if (!(contains((Office) aC))) {
+            if (!(contains((Space) aC))) {
                 return false;
             }
         }
@@ -276,9 +288,9 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
     }
 
     @Override
-    public boolean addAll(Collection<? extends OfficeFloor> c) {
+    public boolean addAll(Collection<? extends Floor> c) {
         if (c == null) { throw new NullPointerException("specified collection in null"); }
-        for (OfficeFloor aC : c) {
+        for (Floor aC : c) {
             this.add(aC);
         }
         return true;
@@ -311,8 +323,8 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
 
     @Override
     public void clear() {
-        Node<OfficeFloor> prev = firstNode;
-        Node<OfficeFloor> buf = firstNode.nextElement;
+        Node<Floor> prev = headNode;
+        Node<Floor> buf = headNode.nextElement;
         while (buf!=null){
             prev.nextElement=buf.nextElement;
             prev=buf;
@@ -320,6 +332,17 @@ public class OfficeBuilding implements Collection<OfficeFloor>{
         }
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("OfficeFloor{");
+        sb.append("size=").append(size);
+        sb.append(", Nodes=");
+        for(Floor officeFloor : this){
+            sb.append("\n ---").append(officeFloor);
+        }
+        sb.append('}');
+        return sb.toString();
+    }
 
     private class  Node<E>{
         private E currentElement;
