@@ -1,6 +1,8 @@
 package buildings;
 
-public interface Floor {
+import java.io.Serializable;
+
+public interface Floor extends Serializable {
     int size();
     double totalSpace();
     int totalNumberRooms();

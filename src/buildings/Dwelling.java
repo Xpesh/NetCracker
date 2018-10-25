@@ -1,8 +1,9 @@
 package buildings;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Dwelling implements Building {
+public class Dwelling implements Building, Serializable {
     private Floor[] floors;
 
     public Dwelling(Floor[] floors) {
@@ -15,11 +16,12 @@ public class Dwelling implements Building {
             floors[i] = new DwellingFloor(sizeFloor[i]);
         }
     }
-
+    @Override
     public int size(){
         return floors.length;
     }
 
+    @Override
     public int numberSpaces(){
         int count = 0;
         for(Floor floor : floors){
@@ -30,6 +32,7 @@ public class Dwelling implements Building {
         return count;
     }
 
+    @Override
     public double totalSpace(){
         double count = 0;
         for(Floor floor : floors){
@@ -40,6 +43,7 @@ public class Dwelling implements Building {
         return count;
     }
 
+    @Override
     public int totalNumberRooms(){
         int count = 0;
         for(Floor floor : floors){
@@ -50,10 +54,12 @@ public class Dwelling implements Building {
         return count;
     }
 
+    @Override
     public Floor[] getFloors() {
         return floors;
     }
 
+    @Override
     public Floor getFloor(int index){
         if(index>size()){
             throw new FloorIndexOutOfBoundsException();
@@ -61,6 +67,7 @@ public class Dwelling implements Building {
         return floors[index];
     }
 
+    @Override
     public Floor setFloor(int index, Floor floor){
         if(index>size()){
             throw new FloorIndexOutOfBoundsException();
@@ -70,6 +77,7 @@ public class Dwelling implements Building {
         return returnFlor;
     }
 
+    @Override
     public Space get(int index){
         if(index> numberSpaces()){
             throw new SpaceIndexOutOfBoundsException();
@@ -83,6 +91,7 @@ public class Dwelling implements Building {
         return null;
     }
 
+    @Override
     public Space set(int index, Space space){
         if(index>= numberSpaces())
             throw new SpaceIndexOutOfBoundsException();
@@ -96,6 +105,7 @@ public class Dwelling implements Building {
         throw new SpaceIndexOutOfBoundsException();
     }
 
+    @Override
     public boolean add(int index, Space space){
         if(index> numberSpaces())
             throw new SpaceIndexOutOfBoundsException();
@@ -109,6 +119,7 @@ public class Dwelling implements Building {
         return false;
     }
 
+    @Override
     public void remove(int index){
         if(index>= numberSpaces())
             throw new SpaceIndexOutOfBoundsException();
@@ -122,8 +133,7 @@ public class Dwelling implements Building {
         }
     }
 
-
-
+    @Override
     public Space getBestSpace(){
         Space space, bestSpace = floors[0].getBestSpace();
         for(int i=1;i<size();i++){
@@ -135,6 +145,7 @@ public class Dwelling implements Building {
         return bestSpace;
     }
 
+    @Override
     public Space[] getSortedSpace() {
         Space[] arr = new Space[numberSpaces()];
         Space[] toAdd;
@@ -174,10 +185,11 @@ public class Dwelling implements Building {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Dwelling{");
-        sb.append("floors=").append(Arrays.toString(floors));
-        sb.append('}');
-        return sb.toString();
+        final StringBuilder sb = new StringBuilder("Dwelling ( ").append(size());
+        for(Floor floor : floors){
+            sb.append(" , ").append(floor);
+        }
+        return sb.append(" )").toString();
     }
 }
 

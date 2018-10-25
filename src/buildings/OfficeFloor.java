@@ -1,9 +1,10 @@
 package buildings;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OfficeFloor implements Collection<Space>, Floor {
+public class OfficeFloor implements Collection<Space>, Floor, Serializable {
     private int size=0;
     private Node<Space> lastNode = new Node<Space>();
     private Node<Space> firstNode = new Node<Space>(null,lastNode);
@@ -202,7 +203,7 @@ public class OfficeFloor implements Collection<Space>, Floor {
         if (c == null) { throw new NullPointerException("specified collection in null"); }
         if (c == this) { return true; }
         for (Object aC : c) {
-            if (!(contains((Space) aC))) {
+            if (!(contains(aC))) {
                 return false;
             }
         }
@@ -256,17 +257,14 @@ public class OfficeFloor implements Collection<Space>, Floor {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("OfficeFloor{");
-        sb.append("size=").append(size);
-        sb.append(", Nodes=");
+        final StringBuilder sb = new StringBuilder("OfficeFloor ( ").append(size);
         for(Space space : this){
-            sb.append("\n").append(space);
+            sb.append(" , ").append(space);
         }
-        sb.append('}');
-        return sb.toString();
+        return sb.append(" )").toString();
     }
 
-    private class  Node<E>{
+    private class  Node<E> implements Serializable{
         private E currentElement;
         private Node<E> nextElement;
 

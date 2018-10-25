@@ -1,6 +1,8 @@
 package buildings;
 
-public interface Building {
+import java.io.Serializable;
+
+public interface Building extends Serializable {
     int size();
     int numberSpaces();
     double totalSpace();

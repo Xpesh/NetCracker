@@ -1,6 +1,8 @@
 package buildings;
 
-public class Flat implements Space{
+import java.io.Serializable;
+
+public class Flat implements Space,Serializable{
     private double space;
     private int numberRooms;
     private static final int DEFAULT_NUMBER_ROOMS=2;
@@ -43,10 +45,6 @@ public class Flat implements Space{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("\nFlat{");
-        sb.append("space=").append(space);
-        sb.append(", numberRooms=").append(numberRooms);
-        sb.append('}');
-        return sb.toString();
+        return new StringBuilder("Flat ( ").append(numberRooms).append(" , ").append(space).append(" )").toString();
     }
 }

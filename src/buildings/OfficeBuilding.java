@@ -1,9 +1,10 @@
 package buildings;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class OfficeBuilding implements Collection<Floor>, Building{
+public class OfficeBuilding implements Collection<Floor>, Building, Serializable{
 
     private int size=0;
     private Node<Floor> headNode = new Node<Floor>();
@@ -71,9 +72,10 @@ public class OfficeBuilding implements Collection<Floor>, Building{
             else
                 return floor.get(index);
         }
-        return null;
+        throw new SpaceIndexOutOfBoundsException();
     }
 
+    @Override
     public Space set(int index, Space space){
         if(index<0 || index>=size()){
             throw new SpaceIndexOutOfBoundsException();
@@ -88,6 +90,7 @@ public class OfficeBuilding implements Collection<Floor>, Building{
         throw new SpaceIndexOutOfBoundsException();
     }
 
+    @Override
     public boolean add(int index, Space space){
         if(index>size()){
             throw new SpaceIndexOutOfBoundsException();
@@ -102,6 +105,7 @@ public class OfficeBuilding implements Collection<Floor>, Building{
         return false;
     }
 
+    @Override
     public Space getBestSpace(){
         Space bestFlat = headNode.nextElement.currentElement.getBestSpace();
         for(Floor floor : this){
@@ -111,12 +115,13 @@ public class OfficeBuilding implements Collection<Floor>, Building{
         return bestFlat;
     }
 
+    @Override
     public Space[] getSortedSpace() {
         Space[] arr = new Space[numberSpaces()];
         Space[] toAdd;
         int c = 0;
         for (Floor floor : this) {
-            toAdd = (Space[]) floor.getSpaces();
+            toAdd = floor.getSpaces();
             System.arraycopy(toAdd, 0, arr, c, toAdd.length);
             c += toAdd.length;
         }
@@ -158,8 +163,14 @@ public class OfficeBuilding implements Collection<Floor>, Building{
             return headNode;
         }
         Node<Floor> buf = headNode.nextElement;
-        for(int i=0;i<id;i++){
-            buf=buf.nextElement;
+        if(id<size/2){
+            for(int i=0;i<id;i++){
+                buf=buf.nextElement;
+            }
+        }else {
+            for(int i=0;i<id;i++){
+                buf=buf.prevElement;
+            }
         }
         return buf;
     }
@@ -168,6 +179,7 @@ public class OfficeBuilding implements Collection<Floor>, Building{
         buf.nextElement=buf.nextElement.nextElement;
         size--;
     }
+    @Override
     public void remove(int id){
         removeNode(id);
     }
@@ -178,10 +190,12 @@ public class OfficeBuilding implements Collection<Floor>, Building{
         buf.nextElement=node;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size()==0;
     }
@@ -334,28 +348,25 @@ public class OfficeBuilding implements Collection<Floor>, Building{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("OfficeFloor{");
-        sb.append("size=").append(size);
-        sb.append(", Nodes=");
-        for(Floor officeFloor : this){
-            sb.append("\n ---").append(officeFloor);
+        final StringBuilder sb = new StringBuilder("OfficeBuilding ( ").append(size());
+        for(Floor floor : this){
+            sb.append(" , ").append(floor);
         }
-        sb.append('}');
-        return sb.toString();
+        return sb.append(" )").toString();
     }
 
-    private class  Node<E>{
+    private class  Node<E> implements Serializable{
         private E currentElement;
         private Node<E> nextElement;
         private Node<E> prevElement;
 
-        public Node(E currentElement, Node<E> nextElement, Node<E> prevElement) {
+        private Node(E currentElement, Node<E> nextElement, Node<E> prevElement) {
             this.currentElement = currentElement;
             this.nextElement = nextElement;
             this.prevElement = prevElement;
         }
 
-        public Node() { }
+        private Node() { }
 
         @Override
         public String toString() {

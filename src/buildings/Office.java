@@ -1,6 +1,8 @@
 package buildings;
 
-public class Office implements Space{
+import java.io.Serializable;
+
+public class Office implements Space, Serializable{
     private double space;
     private int numberRooms;
     private static final int DEFAULT_NUMBER_ROOMS=1;
@@ -43,11 +45,7 @@ public class Office implements Space{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Office{");
-        sb.append("space=").append(space);
-        sb.append(", numberRooms=").append(numberRooms);
-        sb.append('}');
-        return sb.toString();
+        return new StringBuilder("Office ( ").append(numberRooms).append(" , ").append(space).append(" )").toString();
     }
 
     @Override
