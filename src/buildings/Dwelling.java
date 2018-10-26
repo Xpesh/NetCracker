@@ -2,6 +2,7 @@ package buildings;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class Dwelling implements Building, Serializable {
     private Floor[] floors;
@@ -183,6 +184,37 @@ public class Dwelling implements Building, Serializable {
             quickSort(a, first, j);
     }
 
+    public boolean contains(Object o) {
+        for (Floor o1 : floors) {
+            if (o1.equals(o)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsAll(Collection<?> c) {
+        if (size() == 0 ) { return false; }
+        if (c == null) { throw new NullPointerException("specified collection in null"); }
+        if (c == this) { return true; }
+        for (Object aC : c) {
+            if (!(contains(aC))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if(this==o) return true;
+        if(! (o instanceof OfficeBuilding)) return false;
+        Dwelling dwelling = (Dwelling) o;
+        if (size()!=dwelling.size()) return false;
+        return containsAll(Arrays.asList(dwelling));
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Dwelling ( ").append(size());
@@ -190,6 +222,24 @@ public class Dwelling implements Building, Serializable {
             sb.append(" , ").append(floor);
         }
         return sb.append(" )").toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = size();
+        for (Object i : floors) {
+            hash ^= i.hashCode();
+        }
+        return hash;
+    }
+
+    @Override
+    public Object clone() {
+        Floor[] newFloors = new Floor[floors.length];
+        for (int i = 0; i < floors.length; i++) {
+            newFloors[i] = (Floor)(floors[i]).clone();
+        }
+        return new Dwelling(newFloors);
     }
 }
 

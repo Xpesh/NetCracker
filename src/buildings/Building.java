@@ -2,7 +2,7 @@ package buildings;
 
 import java.io.Serializable;
 
-public interface Building extends Serializable {
+public interface Building extends Serializable, Cloneable {
     int size();
     int numberSpaces();
     double totalSpace();
@@ -16,4 +16,5 @@ public interface Building extends Serializable {
     void remove(int index);
     Space getBestSpace();
     Space[] getSortedSpace();
+    Object clone();
 }

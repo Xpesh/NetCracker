@@ -3,7 +3,7 @@ package buildings;
 import java.io.*;
 import java.util.Scanner;
 
-public class Buildings {
+public class Buildings implements Serializable{
 
     public static void outputBuilding (Building building, OutputStream out) {
         try (DataOutputStream dos = new DataOutputStream(out)) {
@@ -43,6 +43,14 @@ public class Buildings {
             e.printStackTrace();
         }
         return building;
+    }
+    public static Building readBuilding(Scanner s){
+        try {
+            return parseBuilding(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static Building parseBuilding(Scanner scanner) throws IOException {
@@ -113,9 +121,9 @@ public class Buildings {
         return spaces;
     }
 
-    public static void serializeBuilding(Building building, OutputStream out) throws IOException {
-        ObjectOutputStream oos = (ObjectOutputStream) out;
-        oos.writeObject(building);
+    public static void serializeBuilding(Building building, OutputStream sout) throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(sout);
+        out.writeObject(building);
     }
 
     public static Building deserializeBuilding(InputStream in) {

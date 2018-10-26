@@ -302,6 +302,15 @@ public class OfficeBuilding implements Collection<Floor>, Building, Serializable
     }
 
     @Override
+    public boolean equals(Object o) {
+        if(this==o) return true;
+        if(! (o instanceof OfficeBuilding)) return false;
+        OfficeBuilding officeBuilding = (OfficeBuilding) o;
+        if (size!=officeBuilding.size) return false;
+        return containsAll(officeBuilding);
+    }
+
+    @Override
     public boolean addAll(Collection<? extends Floor> c) {
         if (c == null) { throw new NullPointerException("specified collection in null"); }
         for (Floor aC : c) {
@@ -353,6 +362,24 @@ public class OfficeBuilding implements Collection<Floor>, Building, Serializable
             sb.append(" , ").append(floor);
         }
         return sb.append(" )").toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = size;
+        for (Object i : this) {
+            hash ^= i.hashCode();
+        }
+        return hash;
+    }
+
+    @Override
+    public Object clone() {
+        OfficeBuilding ob = new OfficeBuilding(0, new int[]{});
+        for (Object i : this) {
+            ob.add((Floor)((Floor)i).clone());
+        }
+        return ob;
     }
 
     private class  Node<E> implements Serializable{

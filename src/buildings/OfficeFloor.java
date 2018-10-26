@@ -264,6 +264,33 @@ public class OfficeFloor implements Collection<Space>, Floor, Serializable {
         return sb.append(" )").toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(this==o) return true;
+        if(! (o instanceof OfficeBuilding)) return false;
+        OfficeBuilding officeBuilding = (OfficeBuilding) o;
+        if (size!=officeBuilding.size()) return false;
+        return containsAll(officeBuilding);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = size;
+        for (Object i : this) {
+            hash ^= i.hashCode();
+        }
+        return hash;
+    }
+
+    @Override
+    public Object clone() {
+        Space[] spaces = getSpaces();
+        for (int i = 0; i < spaces.length; i++) {
+            spaces[i] = (Space)spaces[i].clone();
+        }
+        return new OfficeFloor(spaces);
+    }
+
     private class  Node<E> implements Serializable{
         private E currentElement;
         private Node<E> nextElement;

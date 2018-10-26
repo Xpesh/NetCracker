@@ -47,4 +47,23 @@ public class Flat implements Space,Serializable{
     public String toString() {
         return new StringBuilder("Flat ( ").append(numberRooms).append(" , ").append(space).append(" )").toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Flat)) return false;
+        Flat flat = (Flat) o;
+        if (Double.compare(flat.space, space) != 0) return false;
+        return numberRooms == flat.numberRooms;
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(space) ^ numberRooms;
+    }
+
+    @Override
+    public Object clone() {
+        return new Flat(space, numberRooms);
+    }
 }

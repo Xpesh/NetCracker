@@ -2,6 +2,7 @@ package buildings;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class DwellingFloor implements Floor,Serializable{
     private Space[] spaces;
@@ -103,5 +104,53 @@ public class DwellingFloor implements Floor,Serializable{
             sb.append(" , ").append(space);
         }
         return sb.append(" )").toString();
+    }
+    public boolean contains(Object o) {
+        for (Space o1 : spaces) {
+            if (o1.equals(o)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsAll(Collection<?> c) {
+        if (size() == 0 ) { return false; }
+        if (c == null) { throw new NullPointerException("specified collection in null"); }
+        if (c == this) { return true; }
+        for (Object aC : c) {
+            if (!(contains(aC))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if(this==o) return true;
+        if(! (o instanceof OfficeBuilding)) return false;
+        DwellingFloor dwellingFloor = (DwellingFloor) o;
+        if (size()!=dwellingFloor.size()) return false;
+        return containsAll(Arrays.asList(dwellingFloor));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = size();
+        for (Object i : spaces) {
+            hash ^= i.hashCode();
+        }
+        return hash;
+    }
+
+    @Override
+    public Object clone() {
+        Space[] spaces = getSpaces();
+        for (int i = 0; i < spaces.length; i++) {
+            spaces[i] = (Space)spaces[i].clone();
+        }
+        return new DwellingFloor(spaces);
     }
 }

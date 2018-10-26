@@ -51,21 +51,19 @@ public class Office implements Space, Serializable{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (o instanceof Office) return false;
         Office office = (Office) o;
-
         if (Double.compare(office.space, space) != 0) return false;
         return numberRooms == office.numberRooms;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(space);
-        result = (int) (temp ^ (temp >>> 32));
-        result = 31 * result + numberRooms;
-        return result;
+        return Double.hashCode(space) ^ numberRooms;
+    }
+
+    @Override
+    public Object clone() {
+        return new Office(space, numberRooms);
     }
 }
