@@ -1,8 +1,14 @@
-package buildings;
+package buildings.dwelling;
+
+import buildings.Floor;
+import buildings.office.OfficeBuilding;
+import buildings.Space;
+import buildings.SpaceIndexOutOfBoundsException;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class DwellingFloor implements Floor,Serializable{
     private Space[] spaces;
@@ -105,6 +111,7 @@ public class DwellingFloor implements Floor,Serializable{
         }
         return sb.append(" )").toString();
     }
+
     public boolean contains(Object o) {
         for (Space o1 : spaces) {
             if (o1.equals(o)) {
@@ -152,5 +159,24 @@ public class DwellingFloor implements Floor,Serializable{
             spaces[i] = (Space)spaces[i].clone();
         }
         return new DwellingFloor(spaces);
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator<Space>() {
+            int currentId = 0;
+            @Override
+            public boolean hasNext() {
+                return currentId<size();
+            }
+
+            @Override
+            public Space next() {
+                if(hasNext()){
+                    return spaces[currentId++];
+                }
+                throw new NullPointerException();
+            }
+        };
     }
 }

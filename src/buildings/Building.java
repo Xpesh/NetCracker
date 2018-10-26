@@ -1,8 +1,9 @@
 package buildings;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
-public interface Building extends Serializable, Cloneable {
+public interface Building extends Serializable, Cloneable, Iterable<Floor> {
     int size();
     int numberSpaces();
     double totalSpace();
@@ -17,4 +18,6 @@ public interface Building extends Serializable, Cloneable {
     Space getBestSpace();
     Space[] getSortedSpace();
     Object clone();
+    Iterator iterator();
+
 }

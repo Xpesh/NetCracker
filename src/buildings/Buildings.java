@@ -1,9 +1,47 @@
 package buildings;
 
+import buildings.dwelling.Dwelling;
+import buildings.dwelling.DwellingFactory;
+import buildings.dwelling.DwellingFloor;
+import buildings.dwelling.Flat;
+import buildings.office.Office;
+import buildings.office.OfficeBuilding;
+import buildings.office.OfficeFloor;
+
 import java.io.*;
 import java.util.Scanner;
 
 public class Buildings implements Serializable{
+
+    private static BuildingFactory buildingFactory = new DwellingFactory();
+
+    public static void setBuildingFactory(BuildingFactory buildingFactory) {
+        Buildings.buildingFactory = buildingFactory;
+    }
+
+    public Space createSpace(double area) {
+        return buildingFactory.createSpace(area);
+    }
+
+    public Space createSpace(int roomsCount, double area) {
+        return buildingFactory.createSpace(roomsCount,area);
+    }
+
+    public Floor createFloor(int spacesCount) {
+        return buildingFactory.createFloor(spacesCount);
+    }
+
+    public Floor createFloor(Space[] spaces) {
+        return buildingFactory.createFloor(spaces);
+    }
+
+    public Building createBuilding(int floorsCount, int[] spacesCounts) {
+        return buildingFactory.createBuilding(floorsCount,spacesCounts);
+    }
+
+    public Building createBuilding(Floor[] floors) {
+        return buildingFactory.createBuilding(floors);
+    }
 
     public static void outputBuilding (Building building, OutputStream out) {
         try (DataOutputStream dos = new DataOutputStream(out)) {

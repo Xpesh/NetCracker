@@ -1,8 +1,12 @@
-package buildings;
+package buildings.dwelling;
+
+import buildings.*;
+import buildings.office.OfficeBuilding;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class Dwelling implements Building, Serializable {
     private Floor[] floors;
@@ -240,6 +244,24 @@ public class Dwelling implements Building, Serializable {
             newFloors[i] = (Floor)(floors[i]).clone();
         }
         return new Dwelling(newFloors);
+    }
+    @Override
+    public Iterator iterator() {
+        return new Iterator<Floor>() {
+            int currentId = 0;
+            @Override
+            public boolean hasNext() {
+                return currentId<size();
+            }
+
+            @Override
+            public Floor next() {
+                if(hasNext()){
+                    return floors[currentId++];
+                }
+                throw new NullPointerException();
+            }
+        };
     }
 }
 
