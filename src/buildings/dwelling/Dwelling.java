@@ -160,33 +160,10 @@ public class Dwelling implements Building, Serializable {
             System.arraycopy(toAdd, 0, arr, c, toAdd.length);
             c += toAdd.length;
         }
-        quickSort(arr,0,arr.length-1);
+        Sort.quickSort(arr,0,arr.length-1);
         return arr;
     }
 
-    private static void quickSort(Space[] a, int first, int last) {
-        int i = first;
-        int j = last;
-        double x = a[(first + last) / 2].getSpace();
-        Space temp;
-        do {
-            while (a[i].getSpace() < x) i++;
-            while (a[j].getSpace() > x) j--;
-            if (i <= j) {
-                if (i < j) {
-                    temp = a[i];
-                    a[i] = a[j];
-                    a[j] = temp;
-                }
-                i++;
-                j--;
-            }
-        } while (i <= j);
-        if (i < last)
-            quickSort(a, i, last);
-        if (first < j)
-            quickSort(a, first, j);
-    }
 
     public boolean contains(Object o) {
         for (Floor o1 : floors) {

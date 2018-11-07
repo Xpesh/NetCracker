@@ -9,6 +9,7 @@ import buildings.office.OfficeBuilding;
 import buildings.office.OfficeFloor;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class Buildings implements Serializable{
@@ -19,27 +20,27 @@ public class Buildings implements Serializable{
         Buildings.buildingFactory = buildingFactory;
     }
 
-    public Space createSpace(double area) {
+    public static Space createSpace(double area) {
         return buildingFactory.createSpace(area);
     }
 
-    public Space createSpace(int roomsCount, double area) {
+    public static Space createSpace(int roomsCount, double area) {
         return buildingFactory.createSpace(roomsCount,area);
     }
 
-    public Floor createFloor(int spacesCount) {
+    public static Floor createFloor(int spacesCount) {
         return buildingFactory.createFloor(spacesCount);
     }
 
-    public Floor createFloor(Space[] spaces) {
+    public static Floor createFloor(Space[] spaces) {
         return buildingFactory.createFloor(spaces);
     }
 
-    public Building createBuilding(int floorsCount, int[] spacesCounts) {
+    public static Building createBuilding(int floorsCount, int[] spacesCounts) {
         return buildingFactory.createBuilding(floorsCount,spacesCounts);
     }
 
-    public Building createBuilding(Floor[] floors) {
+    public static Building createBuilding(Floor[] floors) {
         return buildingFactory.createBuilding(floors);
     }
 
@@ -96,16 +97,17 @@ public class Buildings implements Serializable{
         switch (scanner.next()){
             case "OfficeBuilding" :{
                 scanner.next();
-                building = new OfficeBuilding(parseFloors(scanner, scanner.nextInt()));
+//                building = new OfficeBuilding(parseFloors(scanner, scanner.nextInt()));
                 break;
             }
             case "Dwelling" :{
                 scanner.next();
-                building = new Dwelling(parseFloors(scanner, scanner.nextInt()));
+//                building = new Dwelling(parseFloors(scanner, scanner.nextInt()));
                 break;
             }
             default: throw new IOException();
         }
+        building = createBuilding(parseFloors(scanner,scanner.nextInt()));
         return building;
     }
     private static Floor[] parseFloors(Scanner scanner, int size) throws IOException {
@@ -115,13 +117,15 @@ public class Buildings implements Serializable{
             switch (scanner.next()) {
                 case "OfficeFloor" :{
                     scanner.next();
-                    floors[i] = new OfficeFloor(parseSpaces(scanner, scanner.nextInt()));
+//                    floors[i] = new OfficeFloor(parseSpaces(scanner, scanner.nextInt()));
+                    floors[i]=createFloor(parseSpaces(scanner,scanner.nextInt()));
                     scanner.next();
                     break;
                 }
                 case "DwellingFloor" :{
                     scanner.next();
-                    floors[i] = new DwellingFloor(parseSpaces(scanner, scanner.nextInt()));
+//                    floors[i] = new DwellingFloor(parseSpaces(scanner, scanner.nextInt()));
+                    floors[i]=createFloor(parseSpaces(scanner,scanner.nextInt()));
                     scanner.next();
                     break;
                 }
@@ -140,7 +144,8 @@ public class Buildings implements Serializable{
                     int numberRooms = scanner.nextInt();
                     scanner.next();
                     double area = scanner.nextDouble();
-                    spaces[i] = new Office(area, numberRooms);
+//                    spaces[i] = new Office(area, numberRooms);
+                    spaces[i] = createSpace(numberRooms,area);
                     scanner.next();
                     break;
                 }
@@ -149,7 +154,8 @@ public class Buildings implements Serializable{
                     int numberRooms = scanner.nextInt();
                     scanner.next();
                     double area = scanner.nextDouble();
-                    spaces[i] = new Flat(area, numberRooms);
+//                    spaces[i] = new Flat(area, numberRooms);
+                    spaces[i] = createSpace(numberRooms,area);
                     scanner.next();
                     break;
                 }
@@ -171,6 +177,13 @@ public class Buildings implements Serializable{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static <E extends Space, Floor> void sort(E[] a){
+        Sort.quickSort(a,0,a.length);
+    }
+    public static <E> void sort(E[] a, Comparator<E> comparator){
+        Sort.quickSort(a,0,a.length, comparator);
     }
 
 }
