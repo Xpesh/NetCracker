@@ -51,7 +51,7 @@ public class Sort{
 //        if (first < j)
 //            quickSort(a, first, j);
 //    }
-    public static <E extends Space, Floor> void quickSort(E[] a, int first, int last) {
+    public static <E extends Comparable> void quickSort(E[] a, int first, int last) {
         int i = first;
         int j = last;
         E x = a[(first + last) / 2];

@@ -293,6 +293,7 @@ public class OfficeFloor implements Collection<Space>, Floor, Serializable {
             spaces[i] = (Space)spaces[i].clone();
         }
         return new OfficeFloor(spaces);
+//        return new OfficeFloor(getSpaces().clone()); //test
     }
 
     private class  Node<E> implements Serializable{
