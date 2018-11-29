@@ -182,8 +182,13 @@ public class Buildings implements Serializable{
     public static <E extends Space, Floor> void sort(E[] a){
         Sort.quickSort(a,0,a.length);
     }
+
     public static <E> void sort(E[] a, Comparator<E> comparator){
         Sort.quickSort(a,0,a.length, comparator);
+    }
+
+    public static Floor synchronizedFloor (Floor floor){
+        return new SynchronizedFloor(floor);
     }
 
 }

@@ -60,6 +60,21 @@ public class SynchronizedFloor implements Floor {
     }
 
     @Override
+    public synchronized boolean equals(Object o) {
+        return floor.equals(o);
+    }
+
+    @Override
+    public synchronized int hashCode() {
+        return floor.hashCode();
+    }
+
+    @Override
+    public synchronized String toString() {
+        return floor.toString();
+    }
+
+    @Override
     public Iterator iterator() {
         throw new UnsupportedOperationException("Not supported.");
     }
