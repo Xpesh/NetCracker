@@ -81,6 +81,13 @@ public class Dwelling implements Building, Serializable {
         floors[index]=floor;
         return returnFlor;
     }
+    @Override
+    public void addFloor(Floor floor){
+        Floor[] floors = new Floor[this.floors.length+1];
+        System.arraycopy(this.floors,0,floors,0,this.floors.length);
+        floors[this.floors.length]=floor;
+        this.floors=floors;
+    }
 
     @Override
     public Space get(int index){

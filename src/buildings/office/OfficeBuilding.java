@@ -228,7 +228,6 @@ public class OfficeBuilding implements Collection<Floor>, Building, Serializable
         return a;
     }
 
-    @Override
     public boolean add(Floor officeFloor) {
         Node<Floor> node;
         if(size==0){
@@ -244,6 +243,11 @@ public class OfficeBuilding implements Collection<Floor>, Building, Serializable
         size++;
         return true;
 
+    }
+
+    @Override
+    public void addFloor(Floor floor){
+        add(floor);
     }
 
     @Override

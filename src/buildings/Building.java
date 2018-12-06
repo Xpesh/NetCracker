@@ -11,6 +11,7 @@ public interface Building extends Serializable, Cloneable, Iterable<Floor> {
     Floor[] getFloors();
     Floor getFloor(int index);
     Floor setFloor(int index, Floor floor);
+    void addFloor(Floor floor);
     Space get(int index);
     Space set(int index, Space space);
     boolean add(int index, Space space);
