@@ -102,12 +102,9 @@ public class FirstForm {
         jMenuBar.add(jMenuFile);
         frame.setJMenuBar(jMenuBar);
 
-        jMenuItemOpenDwelling.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                building = inputBuilding(new DwellingFactory());
-                showBuilding();
-            }
+        jMenuItemOpenDwelling.addActionListener(e -> {
+            building = inputBuilding(new DwellingFactory());
+            showBuilding();
         });
 
         jMenuItemOpenOffice.addActionListener(new ActionListener() {
