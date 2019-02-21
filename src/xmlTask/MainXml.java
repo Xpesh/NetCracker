@@ -52,8 +52,13 @@ public class MainXml {
                 Element student = (Element) students.item(i);
                 Element average = (Element) student.getElementsByTagName("average").item(0);
                 sum = countAverage(student);
-                if(sum != parseAverage(average)){
-                    isRewrite= true;
+                if(average==null){
+                    average = document.createElement("average");
+                    student.appendChild(average);
+                    isRewrite = true;
+                    average.setTextContent(String.valueOf(sum));
+                }else if (sum != parseAverage(average)) {
+                    isRewrite = true;
                     average.setTextContent(String.valueOf(sum));
                 }
             }
@@ -84,8 +89,6 @@ public class MainXml {
             for (int i=0;i<subjects.getLength();i++){
                 sum+=markSubject((Element) subjects.item(i));
             }
-            System.out.println(sum);
-            System.out.println(subjects.getLength());
             return sum/subjects.getLength();
         }
 
@@ -97,10 +100,5 @@ public class MainXml {
         private double markSubject(Element subject){
             return Double.valueOf(subject.getAttribute("mark"));
         }
-
-
-
-
-
     }
 }

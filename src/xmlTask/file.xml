@@ -6,6 +6,6 @@
         <subject title="Физика" mark="2"></subject>
         <subject title="Сети" mark="3"></subject>
         <subject title="БД" mark="4"></subject>
-        <average>3</average>
+        <!--<average>3</average>-->
     </student>
 </group>
