@@ -16,15 +16,13 @@ select empno, ename from emp where mgr = (select mgr from emp where empno = 7698
 select empno, ename, sal from emp where sal > (select avg(sal) from emp);
 
 --task 7
-select ename, deptno, sal from emp where deptno = any
-                                         (select deptno from emp where comm > 0)
-                                     and sal = any
-                                         (select sal from emp where comm > 0);
+select ename, deptno, sal from emp where (deptno,sal) in
+                                         (select deptno,sal from emp where comm > 0);
 
 --task 8
 select ename, deptno, sal from emp where deptno = any
                                          (select deptno from emp where comm > 0)
-                                      or sal = any
+                                      and sal = any
                                          (select sal from emp where comm > 0);
 --task 9
 select ename, empno from emp where sal > (select max(sal) from emp where job = 'CLERK');
@@ -68,5 +66,3 @@ with main as
          ) select i, empno, ename, r.deptno, dname from r join dept
                                                                on r.deptno = dept.deptno)
 select *, (array(select ename from main))[2:] from main;
-
--- СДЕЛАЙ 15
