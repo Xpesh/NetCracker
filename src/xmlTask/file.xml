@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE group PUBLIC "" "/Users/xpesh/IdeaProjects/NetCracker/src/xmlTask/group.dtd">
+<group>
+    <student firstname="Василий" lastname="Пупкин" groupnumber="0">
+        <subject title="Java" mark="5"></subject>
+        <subject title="Физика" mark="2"></subject>
+        <subject title="Сети" mark="3"></subject>
+        <subject title="БД" mark="4"></subject>
+        <!--<average>3</average>-->
+    </student>
+</group>
